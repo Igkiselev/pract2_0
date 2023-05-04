@@ -28,6 +28,56 @@ int strcount(string path) {
     return stringcount;
 }
 
+string bankstruct::getBankName() {
+    return this->bankname;
+}
+string bankstruct::getBankType() {
+    return this->banktype;
+}
+void bankstruct::setBankName(string bankname) {
+    this->bankname = bankname;
+}
+void bankstruct::setBankType(string banktype) {
+    this->banktype = banktype;
+}
+float vkladstruct::getSaving() {
+    return this->saving;
+}
+float vkladstruct::getDebit() {
+    return this->debit;
+}
+float vkladstruct::getCumulative() {
+    return this->cumulative;
+}
+int vkladstruct::getSaving_Month() {
+    return this->saving_month;
+}
+int vkladstruct::getDebit_Month(){
+    return this->debit_month;
+}
+int vkladstruct::getCumulative_Month() {
+    return this->cumulative_month;
+}
+void vkladstruct::setSaving(float saving) {
+    this->saving = saving;
+}
+void vkladstruct::setDebit(float debit) {
+    this->debit = debit;
+}
+void vkladstruct::setCumulative(float cumulative) {
+    this->cumulative = cumulative;
+}
+void vkladstruct::setSaving_Month(int Month) {
+    this->saving_month = Month;
+}
+void vkladstruct::setDebit_Month(int Month) {
+    this->debit_month = Month;
+}
+void vkladstruct::setCumulative_Month(int Month) {
+    this->cumulative_month = Month;
+}
+    //!!!
+//поля приват, функции паблик,добавить гетеры
 
 bestbank::bestbank(int stringcount) {
     this->banki = new bankstruct[stringcount];
@@ -71,28 +121,28 @@ void bestbank::workfile(string path, int stringcount) {
             while (getline(ss, token, ',')) {
                 switch (i) {
                 case 0:
-                    banki[j].bankname = token;
+                    banki[j].setBankName(token);
                     break;
                 case 1:
-                    banki[j].banktype = token;
+                    banki[j].setBankType(token);
                     break;
                 case 2:
-                    vklads[j].saving = stoi(token);
+                    vklads[j].setSaving(stoi(token));
                     break;
                 case 3:
-                    vklads[j].debit = stoi(token);
+                    vklads[j].setDebit(stoi(token));
                     break;
                 case 4:
-                    vklads[j].cumulative = stoi(token);
+                    vklads[j].setCumulative(stoi(token));
                     break;
                 case 5:
-                    vklads[j].saving_month = stoi(token);
+                    vklads[j].setSaving_Month(stoi(token));
                     break;
                 case 6:
-                    vklads[j].debit_month = stoi(token);
+                    vklads[j].setDebit_Month(stoi(token));
                     break;
                 case 7:
-                    vklads[j].cumulative_month = stoi(token);
+                    vklads[j].setCumulative_Month(stoi(token));
                     i = -1;
                     j++;
                     break;
@@ -114,19 +164,19 @@ int bestbank::choosesaving(int stringcount) {
     int j = 0;
     int k = 0;
     for (j = 0; j < stringcount; j++) {
-        if (your_month < vklads[j].saving_month || vklads[j].saving_month == 0) {
+        if (your_month < vklads[j].getSaving_Month() || vklads[j].getSaving_Month() == 0) {
             k += 1;
         }
     }
     if (k != stringcount) {
         int maxI = 0;
         int i;
-        float maxproc = vklads[0].saving;
+        float maxproc = vklads[0].getSaving();
         int koef = 0;
         for (i = 1; i < stringcount; i++) {
-            if (vklads[i].saving > maxproc && your_month >= vklads[i].saving_month) {
-                koef = (int)your_month / vklads[i].saving_month;
-                maxproc = vklads[i].saving;
+            if (vklads[i].getSaving() > maxproc && your_month >= vklads[i].getSaving_Month()) {
+                koef = (int)your_month / vklads[i].getSaving_Month();
+                maxproc = vklads[i].getSaving();
                 maxI = i;
             }
         }
@@ -137,7 +187,7 @@ int bestbank::choosesaving(int stringcount) {
         for (a = 0; a < koef; a++) {
             summa *= (double)(1.00 + maxproc / 100);
         }
-        this->bestname[0] = banki[maxI].bankname;
+        this->bestname[0] = banki[maxI].getBankName();
         this->besttype[0] = "saving";
         this->bestsum[0] = summa;
         //cout<<("Best saving invest: BANK- %s, in the next year you will receive %.2lf \n", banki[maxI]->bankname, summa);
@@ -151,20 +201,20 @@ int bestbank::choosesaving(int stringcount) {
 int bestbank::choosedebit(int stringcount) {
     int maxI = 0;
     int i;
-    float maxproc = vklads[0].debit;
+    float maxproc = vklads[0].getDebit();
     int koef = 0;
     int j = 0;
     int k = 0;
     for (j = 0; j < stringcount; j++) {
-        if (your_month < vklads[j].saving_month || vklads[j].saving_month == 0) {
+        if (your_month < vklads[j].getDebit_Month() || vklads[j].getDebit_Month() == 0) {
             k += 1;
         }
     }
     if (k != stringcount) {
         for (i = 1; i < stringcount; i++) {
-            if (vklads[i].debit > maxproc && your_month >= vklads[i].debit_month) {
-                koef = (int)your_month / vklads[i].debit_month;
-                maxproc = vklads[i].debit;
+            if (vklads[i].getDebit() > maxproc && your_month >= vklads[i].getDebit_Month()){
+                koef = (int)your_month / vklads[i].getDebit_Month();
+                maxproc = vklads[i].getDebit();
                 maxI = i;
             }
         }
@@ -174,7 +224,7 @@ int bestbank::choosedebit(int stringcount) {
         for (j = 0; j < koef; j++) {
             summa *= (double)(1.00 + maxproc / 100);
         }
-        this->bestname[1] = banki[maxI].bankname;
+        this->bestname[1] = banki[maxI].getBankName();
         this->besttype[1] = "debit";
         this->bestsum[1] = summa;
         //cout << ("Best debit invest: BANK- banki[maxI]->bankname, in the next year you will receive summa" )<<endl;
@@ -188,20 +238,20 @@ int bestbank::choosedebit(int stringcount) {
 int bestbank::choosecumulative(int stringcount) {
     int maxI = 0;
     int i;
-    float maxproc = vklads[0].cumulative;
+    float maxproc = vklads[0].getCumulative();
     int koef = 0;
     int j = 0;
     int k = 0;
     for (j = 0; j < stringcount; j++) {
-        if (your_month < vklads[j].saving_month || vklads[j].saving_month == 0) {
+        if (your_month < vklads[j].getCumulative_Month() || vklads[j].getCumulative_Month() == 0) {
             k += 1;
         }
     }
     if (k != stringcount) {
         for (i = 1; i < stringcount; i++) {
-            if (vklads[i].cumulative > maxproc && your_month >= vklads[i].cumulative_month) {
-                koef = (int)your_month / vklads[i].cumulative_month;
-                maxproc = vklads[i].cumulative;
+            if (vklads[i].getCumulative() > maxproc && your_month >= vklads[i].getCumulative_Month()){
+                koef = (int)your_month / vklads[i].getCumulative_Month();
+                maxproc = vklads[i].getCumulative();
                 maxI = i;
             }
         }
@@ -209,7 +259,7 @@ int bestbank::choosecumulative(int stringcount) {
         for (j = 0; j < koef; j++) {
             summa *= (double)(1.00 + maxproc / 100);
         }
-        this->bestname[2] = banki[maxI].bankname;
+        this->bestname[2] = banki[maxI].getBankName();
         this->besttype[2] ="cumulative";
         this->bestsum[2] = summa;//cout << ("Best cumulative invest: BANK- banki[maxI]->bankname, in the next year you will receive summa")<< endl;
         return 0;
