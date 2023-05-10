@@ -12,7 +12,7 @@ int main() {
 	string path = getfile();//C:\Users\abobi\banki2.txt
 	int stringcount = strcount(path);
 	bestbank bank(stringcount);
-	
+
 	bank.workfile(path, stringcount);
 
 	bank.data_input();

@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -52,7 +52,7 @@ float vkladstruct::getCumulative() {
 int vkladstruct::getSaving_Month() {
     return this->saving_month;
 }
-int vkladstruct::getDebit_Month(){
+int vkladstruct::getDebit_Month() {
     return this->debit_month;
 }
 int vkladstruct::getCumulative_Month() {
@@ -76,8 +76,6 @@ void vkladstruct::setDebit_Month(int Month) {
 void vkladstruct::setCumulative_Month(int Month) {
     this->cumulative_month = Month;
 }
-    //!!!
-//поля приват, функции паблик,добавить гетеры
 
 bestbank::bestbank(int stringcount) {
     this->banki = new bankstruct[stringcount];
@@ -212,7 +210,7 @@ int bestbank::choosedebit(int stringcount) {
     }
     if (k != stringcount) {
         for (i = 1; i < stringcount; i++) {
-            if (vklads[i].getDebit() > maxproc && your_month >= vklads[i].getDebit_Month()){
+            if (vklads[i].getDebit() > maxproc && your_month >= vklads[i].getDebit_Month()) {
                 koef = (int)your_month / vklads[i].getDebit_Month();
                 maxproc = vklads[i].getDebit();
                 maxI = i;
@@ -249,7 +247,7 @@ int bestbank::choosecumulative(int stringcount) {
     }
     if (k != stringcount) {
         for (i = 1; i < stringcount; i++) {
-            if (vklads[i].getCumulative() > maxproc && your_month >= vklads[i].getCumulative_Month()){
+            if (vklads[i].getCumulative() > maxproc && your_month >= vklads[i].getCumulative_Month()) {
                 koef = (int)your_month / vklads[i].getCumulative_Month();
                 maxproc = vklads[i].getCumulative();
                 maxI = i;
@@ -260,7 +258,7 @@ int bestbank::choosecumulative(int stringcount) {
             summa *= (double)(1.00 + maxproc / 100);
         }
         this->bestname[2] = banki[maxI].getBankName();
-        this->besttype[2] ="cumulative";
+        this->besttype[2] = "cumulative";
         this->bestsum[2] = summa;//cout << ("Best cumulative invest: BANK- banki[maxI]->bankname, in the next year you will receive summa")<< endl;
         return 0;
     }
@@ -276,7 +274,7 @@ void bestbank::chooseall(int stringcount) {
     int deb = choosedebit(stringcount);
     int cum = choosecumulative(stringcount);
     if ((sav + deb + cum) == 3) {
-        cout<<"It is impossible to make a profit because the selected period is less than the minimum" << endl;
+        cout << "It is impossible to make a profit because the selected period is less than the minimum" << endl;
     }
     else {
         chooseprint(n);

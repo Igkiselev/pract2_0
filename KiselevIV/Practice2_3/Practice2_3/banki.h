@@ -16,7 +16,7 @@ public:
 	void setBankType(string banktype);
 };
 
-class vkladstruct{
+class vkladstruct {
 private:
 	float saving;
 	float debit;
