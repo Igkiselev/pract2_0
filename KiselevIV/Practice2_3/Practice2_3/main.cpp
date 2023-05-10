@@ -13,11 +13,11 @@ int main() {
 	int stringcount = strcount(path);
 	bestbank bank(stringcount);
 
-	bank.workfile(path, stringcount);
+	bank.workfile(path);
 
 	bank.data_input();
 
-	bank.chooseall(stringcount);
+	bank.choosebest();
 	return 0;
 
 }

@@ -28,58 +28,57 @@ int strcount(string path) {
     return stringcount;
 }
 
+bankstruct::bankstruct() {
+}
+bankstruct::~bankstruct(){
+}
+string vkladstruct::getVkladName(){
+    return this->vkladname;
+}
+float vkladstruct::getRate(){
+    return this->rate;
+}
+int vkladstruct::getTimes(){
+    return this->times;
+}
+void vkladstruct::setVkladName(string vkladname) {
+    this->vkladname = vkladname;
+}
+void vkladstruct::setRate(float rate){
+    this->rate= rate;
+}
+void vkladstruct::setTimes(int times){
+    this->times = times;
+}
+int bankstruct::getCount() {
+    return this->count;
+}
 string bankstruct::getBankName() {
     return this->bankname;
 }
 string bankstruct::getBankType() {
     return this->banktype;
 }
+vkladstruct* bankstruct::getOur_Vklad() {
+    return this->our_vklad;
+}
 void bankstruct::setBankName(string bankname) {
     this->bankname = bankname;
+}
+void bankstruct::setCount(int count) {
+    this->count = count;
+}
+void bankstruct::setOur_Vklad(int count) {
+    this->our_vklad = new vkladstruct[count];
 }
 void bankstruct::setBankType(string banktype) {
     this->banktype = banktype;
 }
-float vkladstruct::getSaving() {
-    return this->saving;
-}
-float vkladstruct::getDebit() {
-    return this->debit;
-}
-float vkladstruct::getCumulative() {
-    return this->cumulative;
-}
-int vkladstruct::getSaving_Month() {
-    return this->saving_month;
-}
-int vkladstruct::getDebit_Month() {
-    return this->debit_month;
-}
-int vkladstruct::getCumulative_Month() {
-    return this->cumulative_month;
-}
-void vkladstruct::setSaving(float saving) {
-    this->saving = saving;
-}
-void vkladstruct::setDebit(float debit) {
-    this->debit = debit;
-}
-void vkladstruct::setCumulative(float cumulative) {
-    this->cumulative = cumulative;
-}
-void vkladstruct::setSaving_Month(int Month) {
-    this->saving_month = Month;
-}
-void vkladstruct::setDebit_Month(int Month) {
-    this->debit_month = Month;
-}
-void vkladstruct::setCumulative_Month(int Month) {
-    this->cumulative_month = Month;
-}
+
 
 bestbank::bestbank(int stringcount) {
     this->banki = new bankstruct[stringcount];
-    this->vklads = new vkladstruct[stringcount];
+    this->stringcount = stringcount;
 }
 
 string getfile() {
@@ -98,7 +97,7 @@ string getfile() {
     }
 }
 
-void bestbank::workfile(string path, int stringcount) {
+void bestbank::workfile(string path) {
     int i = 0;
     int j = 0;
     ifstream file(path);
@@ -125,30 +124,55 @@ void bestbank::workfile(string path, int stringcount) {
                     banki[j].setBankType(token);
                     break;
                 case 2:
-                    vklads[j].setSaving(stoi(token));
+                    banki[j].setCount(stoi(token));
+                    banki[j].setOur_Vklad(banki[j].getCount());//
                     break;
                 case 3:
-                    vklads[j].setDebit(stoi(token));
+                    banki[j].getOur_Vklad()[0].setVkladName(token);
                     break;
                 case 4:
-                    vklads[j].setCumulative(stoi(token));
+                    banki[j].getOur_Vklad()[0].setRate(stoi(token));
                     break;
                 case 5:
-                    vklads[j].setSaving_Month(stoi(token));
+                    banki[j].getOur_Vklad()[0].setTimes(stoi(token));
+                    if (banki[j].getCount() == 1) {
+                        i = -1;
+                        j++;
+                    }
                     break;
                 case 6:
-                    vklads[j].setDebit_Month(stoi(token));
+                    banki[j].getOur_Vklad()[1].setVkladName(token);
                     break;
                 case 7:
-                    vklads[j].setCumulative_Month(stoi(token));
-                    i = -1;
-                    j++;
+                    banki[j].getOur_Vklad()[1].setRate(stoi(token));
+                    break;
+                case 8:
+                    banki[j].getOur_Vklad()[1].setTimes(stoi(token));
+                    if (banki[j].getCount() == 2) {
+                        i = -1;
+                        j++;
+                    }
+                    break;
+                case 9:
+                    banki[j].getOur_Vklad()[2].setVkladName(token);
+                    break;
+                case 10:
+                    banki[j].getOur_Vklad()[2].setRate(stoi(token));
+                    break;
+                case 11:
+                    banki[j].getOur_Vklad()[2].setTimes(stoi(token));
+                    if (banki[j].getCount() == 3) {
+                        i = -1;
+                        j++;
+                    }
                     break;
                 }
                 i++;
             }
         }
     }
+    file.close();
+
 }
 
 void bestbank::data_input() {
@@ -156,150 +180,53 @@ void bestbank::data_input() {
     cin >> sumvkl;
     cout << "For how long is the contribution made" << endl;
     cin >> your_month;
-}
-
-int bestbank::choosesaving(int stringcount) {
-    int j = 0;
-    int k = 0;
-    for (j = 0; j < stringcount; j++) {
-        if (your_month < vklads[j].getSaving_Month() || vklads[j].getSaving_Month() == 0) {
-            k += 1;
-        }
-    }
-    if (k != stringcount) {
-        int maxI = 0;
-        int i;
-        float maxproc = vklads[0].getSaving();
-        int koef = 0;
-        for (i = 1; i < stringcount; i++) {
-            if (vklads[i].getSaving() > maxproc && your_month >= vklads[i].getSaving_Month()) {
-                koef = (int)your_month / vklads[i].getSaving_Month();
-                maxproc = vklads[i].getSaving();
-                maxI = i;
-            }
-        }
-
-
-        double summa = sumvkl;
-        int a = 0;
-        for (a = 0; a < koef; a++) {
-            summa *= (double)(1.00 + maxproc / 100);
-        }
-        this->bestname[0] = banki[maxI].getBankName();
-        this->besttype[0] = "saving";
-        this->bestsum[0] = summa;
-        //cout<<("Best saving invest: BANK- %s, in the next year you will receive %.2lf \n", banki[maxI]->bankname, summa);
-        return 0;
-    }
-    else if (k == stringcount) {
-        cout << "The saving invest is not suitable for the terms" << endl;
-        return 1;
+    cout << "Enter type of vklad(saving, debit or cumulative)." << endl;
+    cin >> your_type;
+    if (your_type != "saving" && your_type != "debit" && your_type != "cumulative") {
+        cout<<"ERROR!This type of vklad does not exist"<< endl;
     }
 }
-int bestbank::choosedebit(int stringcount) {
+void bestbank::choosebest() {
+    int a = 0;
+    if (your_type == "saving") {
+        a = 0;
+    }
+    else if (your_type == "debit") {
+        a = 1;
+    }
+    else if (your_type == "cumulative") {
+        a = 2;
+    }
     int maxI = 0;
     int i;
-    float maxproc = vklads[0].getDebit();
+    float maxproc = -1;
     int koef = 0;
     int j = 0;
-    int k = 0;
-    for (j = 0; j < stringcount; j++) {
-        if (your_month < vklads[j].getDebit_Month() || vklads[j].getDebit_Month() == 0) {
-            k += 1;
-        }
-    }
-    if (k != stringcount) {
-        for (i = 1; i < stringcount; i++) {
-            if (vklads[i].getDebit() > maxproc && your_month >= vklads[i].getDebit_Month()) {
-                koef = (int)your_month / vklads[i].getDebit_Month();
-                maxproc = vklads[i].getDebit();
+    for (i = 1; i < this->stringcount; i++) {
+        if (banki[i].getCount() >= (a + 1)) {
+            if (banki[i].getOur_Vklad()[a].getRate() > maxproc && your_month >= banki[i].getOur_Vklad()[a].getTimes()) {
+                koef = (int)your_month / banki[i].getOur_Vklad()[a].getTimes();
+                maxproc = banki[i].getOur_Vklad()[a].getRate();
                 maxI = i;
             }
         }
-
-
-        double summa = sumvkl;
-        for (j = 0; j < koef; j++) {
-            summa *= (double)(1.00 + maxproc / 100);
-        }
-        this->bestname[1] = banki[maxI].getBankName();
-        this->besttype[1] = "debit";
-        this->bestsum[1] = summa;
-        //cout << ("Best debit invest: BANK- banki[maxI]->bankname, in the next year you will receive summa" )<<endl;
-        return 0;
     }
-    else if (k == stringcount) {
+    double summa = sumvkl;
+    double s = (double)banki[maxI].getOur_Vklad()[a].getTimes() / 12;
+    for (j = 0; j < koef; j++) {
+        summa *= (double)(1.00 + maxproc * s / 100);
+    }
+    if (maxproc == -1) {
         cout << "The debit invest is not suitable for the terms" << endl;
-        return 1;
-    }
-}
-int bestbank::choosecumulative(int stringcount) {
-    int maxI = 0;
-    int i;
-    float maxproc = vklads[0].getCumulative();
-    int koef = 0;
-    int j = 0;
-    int k = 0;
-    for (j = 0; j < stringcount; j++) {
-        if (your_month < vklads[j].getCumulative_Month() || vklads[j].getCumulative_Month() == 0) {
-            k += 1;
-        }
-    }
-    if (k != stringcount) {
-        for (i = 1; i < stringcount; i++) {
-            if (vklads[i].getCumulative() > maxproc && your_month >= vklads[i].getCumulative_Month()) {
-                koef = (int)your_month / vklads[i].getCumulative_Month();
-                maxproc = vklads[i].getCumulative();
-                maxI = i;
-            }
-        }
-        double summa = sumvkl;
-        for (j = 0; j < koef; j++) {
-            summa *= (double)(1.00 + maxproc / 100);
-        }
-        this->bestname[2] = banki[maxI].getBankName();
-        this->besttype[2] = "cumulative";
-        this->bestsum[2] = summa;//cout << ("Best cumulative invest: BANK- banki[maxI]->bankname, in the next year you will receive summa")<< endl;
-        return 0;
-    }
-    else if (k == stringcount) {
-        cout << "The debit invest is not suitable for the terms" << endl;
-        return 1;
-    }
-}
-
-void bestbank::chooseall(int stringcount) {
-    int n = 3;
-    int sav = choosesaving(stringcount);
-    int deb = choosedebit(stringcount);
-    int cum = choosecumulative(stringcount);
-    if ((sav + deb + cum) == 3) {
-        cout << "It is impossible to make a profit because the selected period is less than the minimum" << endl;
     }
     else {
-        chooseprint(n);
+        cout << "Best " << banki[maxI].getOur_Vklad()[a].getVkladName() << " invest: BANK - " << banki[maxI].getBankName() << ", in the next year you will receive " << summa << endl;
     }
 }
-
-
-
-void bestbank::chooseprint(int n) {
-    int i = 0;
-    int k = 0;
-    double maxsum = this->bestsum[0];
-    for (i = 0; i < n; i++) {
-        if (this->bestsum[i] > maxsum) {
-            maxsum = this->bestsum[i];
-            k = i;
-        }
-    }
-    cout << "The best invest: BANK " << this->bestname[k] << ", his type -" << this->besttype[k] << ". The amount after receiving the deposit will be " << maxsum << endl;
-}
-
-
-
 
 bestbank::~bestbank() {
+    for (int i = 0; i < this->stringcount; i++) {
+        delete[] banki[i].getOur_Vklad();
+    }
     delete[] banki;
-    delete[] vklads;
 }
