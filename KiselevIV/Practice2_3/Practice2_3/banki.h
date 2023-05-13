@@ -17,6 +17,7 @@ public:
 	void setVkladName(string vkladname);
 	void setRate(float rate);
 	void setTimes(int times);
+	friend ostream& operator<<(ostream& os, const vkladstruct& our_vklad);
 };
 
 class bankstruct {
@@ -36,7 +37,7 @@ public:
 	void setOur_Vklad(int count);
 	void setBankName(string bankname);
 	void setBankType(string banktype);
-	
+	friend ostream& operator<<(ostream& os, const bankstruct& banki);
 };
 
 class bestbank {
@@ -47,11 +48,6 @@ private:
 	int your_month;
 	string your_type;
 public:
-	/*bankstruct* getBanki();
-	int getStringcount();
-	int sumvkl;
-	int your_month;
-	string your_type;*/
 	bestbank(int stringcount);
 	~bestbank();
 	void workfile(string path);

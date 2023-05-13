@@ -186,8 +186,25 @@ void bestbank::data_input() {
         cout<<"ERROR!This type of vklad does not exist"<< endl;
     }
 }
+
+ostream& operator<<(ostream& os, const bankstruct& banki) {
+    os << "-----------------------" << endl;
+    os << "Name of bank - " << banki.bankname << endl;
+    os << "Type of  bank - " << banki.banktype << endl;
+    os << "-----------------------" << endl;
+    return os;
+}
+
+ostream& operator<<(ostream& os, const vkladstruct& our_vklad) {
+    os << "Name of vklad - " << our_vklad.vkladname << endl;
+    os << "Rate  of vklad - " << our_vklad.rate << endl;
+    os << "Minimum times of  vklad - " << our_vklad.times << endl;
+    os << "-----------------------" << endl;
+    return os;
+}
+
 void bestbank::choosebest() {
-    int a = 0;
+    int a = -1;
     if (your_type == "saving") {
         a = 0;
     }
@@ -197,30 +214,35 @@ void bestbank::choosebest() {
     else if (your_type == "cumulative") {
         a = 2;
     }
-    int maxI = 0;
-    int i;
-    float maxproc = -1;
-    int koef = 0;
-    int j = 0;
-    for (i = 1; i < this->stringcount; i++) {
-        if (banki[i].getCount() >= (a + 1)) {
-            if (banki[i].getOur_Vklad()[a].getRate() > maxproc && your_month >= banki[i].getOur_Vklad()[a].getTimes()) {
-                koef = (int)your_month / banki[i].getOur_Vklad()[a].getTimes();
-                maxproc = banki[i].getOur_Vklad()[a].getRate();
-                maxI = i;
+    if (a != -1) {
+        int maxI = 0;
+        int i;
+        float maxproc = -1;
+        int koef = 0;
+        int j = 0;
+        for (i = 1; i < this->stringcount; i++) {
+            if (banki[i].getCount() >= (a + 1)) {
+                if (banki[i].getOur_Vklad()[a].getRate() > maxproc && your_month >= banki[i].getOur_Vklad()[a].getTimes()) {
+                    koef = (int)your_month / banki[i].getOur_Vklad()[a].getTimes();
+                    maxproc = banki[i].getOur_Vklad()[a].getRate();
+                    maxI = i;
+                }
             }
         }
-    }
-    double summa = sumvkl;
-    double s = (double)banki[maxI].getOur_Vklad()[a].getTimes() / 12;
-    for (j = 0; j < koef; j++) {
-        summa *= (double)(1.00 + maxproc * s / 100);
-    }
-    if (maxproc == -1) {
-        cout << "The debit invest is not suitable for the terms" << endl;
-    }
-    else {
-        cout << "Best " << banki[maxI].getOur_Vklad()[a].getVkladName() << " invest: BANK - " << banki[maxI].getBankName() << ", in the next year you will receive " << summa << endl;
+        double summa = sumvkl;
+        double s = (double)banki[maxI].getOur_Vklad()[a].getTimes() / 12;
+        for (j = 0; j < koef; j++) {
+            summa *= (double)(1.00 + maxproc * s / 100);
+        }
+        if (maxproc == -1) {
+            cout << "The debit invest is not suitable for the terms" << endl;
+        }
+        else {
+            cout << banki[maxI];
+            cout << banki[maxI].getOur_Vklad()[a];
+            cout << "If your invest " << sumvkl << ", you will receive " << summa << endl;
+            //cout << "Best " << banki[maxI].getOur_Vklad()[a].getVkladName() << " invest: BANK - " << banki[maxI].getBankName() << ", in the next year you will receive " << summa << endl;
+        }
     }
 }
 

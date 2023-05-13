@@ -1,9 +1,9 @@
-GREENbank,national,2,saving,3,14,debit,6,13
-SinkOFF,private,3,saving,5,14,debit,6.6,24,cumulative,5,13
-Poxlava,private,2,saving,1,10,debit,3,13
+GREENbank,national,2,saving,3,3,debit,6,6
+SinkOFF,private,3,saving,5,6,debit,6.6,24,cumulative,5,12
+Poxlava,private,2,saving,1,9,debit,3,12
 Zacritye,private,3,saving,2.5,12,debit,4,18,cumulative,5,15
-MMM,private,3,saving,3,19,debit,6,15,cumulative,7.5,13
-OstapBenderCorporation,private,3,saving,2.6,18,debit,5,15,cumulative,9.75,11
+MMM,private,3,saving,3,9,debit,6,6,cumulative,7.5,3
+OstapBenderCorporation,private,3,saving,2.6,18,debit,5,3,cumulative,9.75,12
 Microzaym,private,2,saving,6,14,debit,7,18
 ChtoSDengamy,private,2,saving,2.4,13,debit,6.15,18
 StateBank,national,2,saving,6,23,debit,7.15,31
