@@ -14,11 +14,14 @@ public:
 	string getVkladName();
 	float getRate();
 	int getTimes();
+
 	void setVkladName(string vkladname);
 	void setRate(float rate);
 	void setTimes(int times);
+
 	friend ostream& operator<<(ostream& os, const vkladstruct& our_vklad);
 };
+
 
 class bankstruct {
 private:
@@ -29,32 +32,33 @@ private:
 public:
 	bankstruct();
 	~bankstruct();
+
 	int getCount();
 	string getBankName();
 	string getBankType();
 	vkladstruct* getOur_Vklad();
+
 	void setCount(int count);
 	void setOur_Vklad(int count);
 	void setBankName(string bankname);
 	void setBankType(string banktype);
+
 	friend ostream& operator<<(ostream& os, const bankstruct& banki);
 };
-
-class bestbank {
+class banklib {
 private:
 	bankstruct* banki;
-	int stringcount;
-	int sumvkl;
-	int your_month;
-	string your_type;
+	int count;
 public:
-	bestbank(int stringcount);
-	~bestbank();
-	void workfile(string path);
+	banklib();
+	banklib(const string& path);
+	~banklib();
 
-	void data_input();
+	banklib& search(float sum, int kMonths, string vkladType);
+	banklib(const banklib& banks);
+	//banklib& operator=(const banklib& banks);//
 
-	void choosebest();
+	friend ostream& operator << (ostream& out, const banklib& banks);
 };
 
 int strcount(string path);
